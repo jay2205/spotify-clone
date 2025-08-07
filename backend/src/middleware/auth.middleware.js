@@ -1,4 +1,4 @@
-import { clerkClient } from "@clerk/exporess";
+import { clerkClient } from "@clerk/express";
 
 export const protectRoute = async (req, res, next) => {
     if (!req.auth.userId) {
@@ -7,7 +7,7 @@ export const protectRoute = async (req, res, next) => {
     next();
 }
 
-export const requireAdmin = async (req, res, next) {
+export const requireAdmin = async (req, res, next) => {
     try {
         const currentUser = await clerkClient.users.getUser(req.auth.userId);
         const isAdmin = process.env.ADMIN_EMAIL === currentUser.primaryEmailAddress?.emailAddress;
@@ -17,6 +17,6 @@ export const requireAdmin = async (req, res, next) {
         next();
     } catch (error) {
         console.error("Error while processing require admin check")
-        return res.status(500).json({ message: `Internal server error. Error: ${error}` })
+        next(`Internal server error. Error: ${error}`)
     }
 }

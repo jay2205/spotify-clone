@@ -1,7 +1,7 @@
 import express from 'express';
 import dontenv from 'dotenv';
 import { clerkMiddleware } from '@clerk/express'
-import { fileUpload } from 'express-fileupload';
+import fileUpload from "express-fileupload";
 import path from 'path'
 
 import { connectDB } from './lib/db.js';
@@ -32,6 +32,11 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statsRoutes);
+
+// Error handling
+app.use((error, req, res, next) => {
+    res.status(500).json({ message: `Internal server error: ${error}` })
+})
 
 app.listen(PORT, () => {
     console.log("Server is running on port : ", PORT)
