@@ -1,9 +1,13 @@
 import { Router } from "express";
+import { getAllSongs, getFeaturedSongs, getMadeForYouSongs, getTrendingSongs } from "../controller/songs.controller.js";
+import { protectRoute, requireAdmin } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.get('/', (req, res) => {
-    res.send('Songs route with get method')
-});
+// Only Admin cal fetch all songs at once
+router.get('/', protectRoute, requireAdmin, getAllSongs);
+router.get('/featured', getFeaturedSongs);
+router.get('/made-for-you', getMadeForYouSongs);
+router.get('/trending', getTrendingSongs);
 
 export default router;
