@@ -8,7 +8,6 @@ const uploadToCloudinary = async (file) => {
         })
         return result.secure_url;
     } catch (error) {
-        console.error(`Error while uploading file to cloudinary: ${error}`)
         throw new Error(`Error while uploading file to cloudinary: ${error}`)
     }
 }
@@ -42,8 +41,7 @@ export const createSong = async (req, res, next) => {
         }
         res.status(201).json({ message: "created a song" })
     } catch (error) {
-        console.error('Error while creating song: ', error);
-        next(error)
+        next(`Error while creating song: ${error}`)
     }
 };
 
@@ -59,8 +57,7 @@ export const deleteSong = async (req, res, next) => {
         await Song.findByIdAndDelete(song._id);
         res.status(200).json({ message: `successfully deleted song with ${id}` })
     } catch (error) {
-        console.error(`Error while deleting song: ${error}`);
-        next(error);
+        next(`Error while deleting song: ${error}`);
     }
 }
 
@@ -81,8 +78,7 @@ export const createAlbum = async (req, res, next) => {
         await album.save()
         res.status(201).json({ message: `Album with ${title} created successfully` })
     } catch (error) {
-        console.error(`Error while creating album: ${error}`)
-        next(error)
+        next(`Error while creating album: ${error}`)
     }
 }
 
@@ -93,8 +89,7 @@ export const deleteAlbum = async (req, res, next) => {
         await Album.findByIdAndDelete(id);
         res.status(200).json({ message: `Successfully deleted album with ${id}` });
     } catch (error) {
-        console.error('Error while deleting the album');
-        next(error)
+        next(`Error while deleting the album: ${error}`)
     }
 }
 
